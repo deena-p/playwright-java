@@ -1,6 +1,6 @@
 # Playwright Locators Guide (Java)
 
-Last updated: 2025-08-10
+Last updated: 2025-08-11
 
 This guide explains Playwright locator concepts in depth for Java users and compares them with Selenium’s element model.
 It covers best practices, advanced patterns, and migration tips.
@@ -36,6 +36,50 @@ button.click();
 - ElementHandle is a direct reference to a specific DOM node at a moment in time; it can become stale.
 - Locator represents a strategy to find an element when needed; Playwright re-resolves and auto-waits by default.
 - Prefer Locator wherever possible. Use ElementHandle for low-level operations or when strictly necessary.
+
+### 2.1 ElementHandle example (Java)
+
+Use ElementHandle for low-level DOM work where a concrete handle is required (e.g., custom JS evaluation, reading layout
+via boundingBox, element-only screenshots). For regular user actions (click/fill), prefer Locator.
+
+```java
+// Prefer Locator for actions (auto-waits, re-resolves):
+page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().
+
+setName("Submit")).
+
+click();
+
+// When you need a concrete ElementHandle:
+ElementHandle handle = page.querySelector("#canvas"); // or: page.locator("#canvas").elementHandle();
+if(handle !=null){
+  // Example 1: Low-level JS evaluation on the element
+  handle.
+
+evaluate("el => el.scrollIntoView()");
+
+// Example 2: Read layout information
+ElementHandle.BoundingBox box = handle.boundingBox();
+  if(box !=null){
+  System.out.
+
+printf("Canvas size: %.0fx%.0f at (%.0f, %.0f)%n",box.width, box.height, box.x, box.y);
+  }
+
+// Example 3: Element-only screenshot
+byte[] png = handle.screenshot(new ElementHandle.ScreenshotOptions().setPath(Paths.get("canvas.png")));
+
+// Note: You can click via ElementHandle, but it lacks Locator's strictness and robust auto-waiting.
+// Prefer: page.locator("#save").click();
+}
+```
+
+Notes:
+
+- Getting handles from a Locator: `ElementHandle h = page.locator(".item").elementHandle();` or multiple via
+  `List<ElementHandle> hs = page.locator(".item").elementHandles();`
+- Handles can become stale after DOM updates. Re-acquire if the UI re-renders.
+- Most tests should use Locator APIs for stability; reserve ElementHandle for specialized needs.
 
 ## 3. Key Concepts
 
