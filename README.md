@@ -18,6 +18,10 @@ Playwright is a Java library to automate [Chromium](https://www.chromium.org/Hom
 
 [https://playwright.dev/java/docs/intro](https://playwright.dev/java/docs/intro)
 
+- Local guide: [Playwright Trace Viewer (Java)](docs/trace-viewer.md)
+- Local guide: [Playwright Locators (Java) — concepts and Selenium comparison](docs/locators.md)
+- Local guide: [Auto-Healing in Playwright (Java) — built-ins, guidance, optional helper](docs/auto-healing.md)
+
 ## API Reference
 
 [https://playwright.dev/java/docs/api/class-playwright](https://playwright.dev/java/docs/api/class-playwright)
