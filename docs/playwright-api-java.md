@@ -217,12 +217,20 @@ ok())break;
 RuntimeException ex){
 last =ex;
   }
-    try{Thread.
+    try{
+    Thread.
 
-sleep(500L*attempts); }catch(
-InterruptedException ignored){}
+sleep(500L*attempts);
+  }catch(
+InterruptedException ignored){
+  Thread.
+
+currentThread().
+
+interrupt();
   }
-  if(res ==null||!res.
+    }
+    if(res ==null||!res.
 
 ok()){
   throw(last !=null?last :new
